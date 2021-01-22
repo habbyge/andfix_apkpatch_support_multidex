@@ -18,4 +18,5 @@ while [ -h "$PRG" ] ; do
 done
 PRGDIR=`dirname "$PRG"`
 
+# 入口改为 main.jar
 java -Xms512m -Xmx1024m -jar $PRGDIR/main.jar "$@"

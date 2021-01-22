@@ -5,10 +5,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class OriginLoader extends URLClassLoader {
-    
-    public FixLoader otherClassLoder;
-    
-    public String otherLoadClassName;
+    public FixLoader otherClassLoder; // 指向 dexdiffer.jar 中的ClassLoader
+    public String otherLoadClassName; // 指向 dexdiffer.jar 中的 DexDiffer
     
     public OriginLoader(URL[] urls) {
         super(urls);
@@ -18,18 +16,24 @@ public class OriginLoader extends URLClassLoader {
         super(urls, parent);
     }
 
+    /**
+     * Appends the specified URL to the list of URLs to search for classes and resources.
+     */
     public void addJar(URL url) {
         this.addURL(url);
     }
-    
+
+    /**
+     * 这里非常重要，加载 apkpatch.jar 中的 DexDiffer 时，使用 FixLoader 加载 dexdiffer.jar 中的 DexDiffer，
+     * 其他类的加载，依旧使用 OriginLoader。
+     */
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         Class clazz = null;
-        if(name.equals(otherLoadClassName)){
+        if (name.equals(otherLoadClassName)) {
             return otherClassLoder.loadClass(name);
         }
         clazz = super.findClass(name);
         return clazz;
     }
-
 }

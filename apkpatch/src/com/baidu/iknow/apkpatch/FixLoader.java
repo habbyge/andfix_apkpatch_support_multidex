@@ -5,8 +5,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 public class FixLoader extends URLClassLoader {
-    
-    public OriginLoader otherClassLoder;
+    public OriginLoader otherClassLoder; // 指向 apkpatch.jar 中的ClassLoader
     
     public FixLoader(URL[] urls) {
         super(urls);
@@ -23,14 +22,13 @@ public class FixLoader extends URLClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         Class clazz = null;
-        try{
+        try {
             clazz = super.findClass(name);
-        }catch(ClassNotFoundException e){
-            if(otherClassLoder!=null){
+        } catch (ClassNotFoundException e) {
+            if (otherClassLoder != null) {
                 clazz = otherClassLoder.loadClass(name);
             }
         }
         return clazz;
     }
-
 }
