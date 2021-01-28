@@ -18,7 +18,9 @@ public class Main {
             OriginLoader oldLoader = getOriginClassLoader(Main.class.getClassLoader());
             FixLoader newLoader = getFixClassLoader(Main.class.getClassLoader());
             oldLoader.otherClassLoder = newLoader;
-            oldLoader.otherLoadClassName = "com.euler.patch.diff.DexDiffer";
+            oldLoader.otherLoadClassNames = new ArrayList<String>();
+            oldLoader.otherLoadClassNames.add("com.euler.patch.diff.DexDiffer");
+            oldLoader.otherLoadClassNames.add("com.euler.patch.annotation.MethodReplaceAnnotaion");
             newLoader.otherClassLoder = oldLoader;
 
             // oldLoader 通过反射得到apkpatch.jar中的main()方法；

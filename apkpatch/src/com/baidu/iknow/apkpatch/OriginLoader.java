@@ -1,12 +1,12 @@
 package com.baidu.iknow.apkpatch;
 
-
+import java.utl.List;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 public class OriginLoader extends URLClassLoader {
     public FixLoader otherClassLoder; // 指向 dexdiffer.jar 中的ClassLoader
-    public String otherLoadClassName; // 指向 dexdiffer.jar 中的 DexDiffer
+    public List<String> otherLoadClassNames; // 指向 dexdiffer.jar 中的 DexDiffer
     
     public OriginLoader(URL[] urls) {
         super(urls);
@@ -30,7 +30,7 @@ public class OriginLoader extends URLClassLoader {
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         Class clazz = null;
-        if (name.equals(otherLoadClassName)) {
+        if (otherLoadClassNames.contains(name)) {
             return otherClassLoder.loadClass(name);
         }
         clazz = super.findClass(name);
