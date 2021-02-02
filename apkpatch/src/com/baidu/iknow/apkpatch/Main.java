@@ -5,13 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Main {
 
     /**
      * 工具的入口由 apkpatch.jar 的 main() 方法改为了 main.jar 的 main() 方法。
      * 所以在这里我们就可以动态替换相关的关键类和方法
-     * @param args
      */
     public static void main(String[] args) {
         try {
@@ -27,24 +27,19 @@ public class Main {
             // 根据 JVM 提供的类加载传导规则：JVM 会选择当前类的类加载器来加载所有该类的引用的类.
             // 得到，oldLoader 以后就是 Main类(这个 Java 程序的入口类)及其引用类的类加载器实例，如果间接引用到了
             // dexdiffer.jar 中的 DexDiffer.java 类，则通过 findClass() 会调用 FixLoader 加载器实例去加载.
-            Class oldMainClass = oldLoader.loadClass("com.euler.patch.Main");
+            Class<?> oldMainClass = oldLoader.loadClass("com.euler.patch.Main");
             Method mainMethod = oldMainClass.getDeclaredMethod("main", String[].class);
             mainMethod.setAccessible(true);
             // 执行apkpatch.jar中的main()方法
             mainMethod.invoke(oldMainClass, (Object) args);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+        } catch (ClassNotFoundException |
+                NoSuchMethodException |
+                SecurityException |
+                IllegalAccessException |
+                IllegalArgumentException |
+                InvocationTargetException |
+                MalformedURLException e) {
+
             e.printStackTrace();
         }
     }

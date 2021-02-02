@@ -9,14 +9,17 @@ import org.jf.dexlib2.iface.AnnotationElement;
 import org.jf.dexlib2.iface.value.EncodedValue;
 import org.jf.dexlib2.immutable.value.ImmutableStringEncodedValue;
 
+import javax.annotation.Nonnull;
+
 public class MethodReplaceAnnotaion extends BaseAnnotation {
     private static final String ANNOTATION = "Lcom/habbyge/iwatch/patch/FixMethodAnno;";
-    private Set<BaseAnnotationElement> mElements = new HashSet();
+    private final Set<BaseAnnotationElement> mElements = new HashSet<BaseAnnotationElement>();
 
     public int getVisibility() {
         return AnnotationVisibility.getVisibility("runtime");
     }
 
+    @Nonnull
     public String getType() {
         return "Lcom/habbyge/iwatch/patch/FixMethodAnno;";
     }
@@ -45,6 +48,7 @@ public class MethodReplaceAnnotaion extends BaseAnnotation {
         this.mElements.add(methodElement);
     }
 
+    @Nonnull
     public Set<? extends AnnotationElement> getElements() {
         return this.mElements;
     }

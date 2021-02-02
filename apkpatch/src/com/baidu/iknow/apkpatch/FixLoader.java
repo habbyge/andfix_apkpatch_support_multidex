@@ -21,7 +21,7 @@ public class FixLoader extends URLClassLoader {
     
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        Class clazz = null;
+        Class<?> clazz = null;
         try {
             clazz = super.findClass(name);
         } catch (ClassNotFoundException e) {
