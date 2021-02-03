@@ -73,7 +73,7 @@ public class DexDiffer {
 //    
     private HashSet<DexBackedClassDef> getClassSet(File apkFile) throws IOException {
     	ZipFile localZipFile = new ZipFile(apkFile);
-    	Enumeration localEnumeration = localZipFile.entries();
+    	Enumeration<?> localEnumeration = localZipFile.entries();
     	HashSet<DexBackedClassDef> newset = new HashSet<DexBackedClassDef>();
     	while (localEnumeration.hasMoreElements()) {
 			ZipEntry localZipEntry = (ZipEntry) localEnumeration.nextElement();
@@ -138,9 +138,12 @@ public class DexDiffer {
         compareField(newClass.getFields(), oldClass.getFields(), info);
     }
 
-    public void compareField(Iterable<? extends DexBackedField> news, Iterable<? extends DexBackedField> olds, DiffInfo info) {
-        for (DexBackedField newField : news)
+    public void compareField(Iterable<? extends DexBackedField> news,
+                             Iterable<? extends DexBackedField> olds, DiffInfo info) {
+
+        for (DexBackedField newField : news) {
             compareField(newField, olds, info);
+        }
     }
 
     public void compareField(DexBackedField newFiled, Iterable<? extends DexBackedField> olds, DiffInfo info) {

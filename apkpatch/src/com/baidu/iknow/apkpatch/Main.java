@@ -47,26 +47,31 @@ public class Main {
     private static OriginLoader getOriginClassLoader(ClassLoader parent) throws MalformedURLException {
         URL[] urls = new URL[] {};
         OriginLoader loader = new OriginLoader(urls, parent);
+
         // 获取 Man 类编译完成后的 Main.class 生成路径，这里应该是：
+//        String mainPath2 = System.getProperty("java.class.path");
         // /Users/habbyge/IdeaProjects/andfix_apkpatch_support_multdex/apkpatch/bin/，
-        String path = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        int pathLastIndex = path.lastIndexOf(File.separator) + 1;
-        path = path.substring(0, pathLastIndex);
-        path = path + "apkpatch.jar";
+        String mainPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
+        int pathLastIndex = mainPath.lastIndexOf(File.separator) + 1;
+        mainPath = mainPath.substring(0, pathLastIndex);
+        mainPath = mainPath + "apkpatch.jar";
         // 让 OriginLoader（Classloader） 能够搜索到 apkpatch.jar 中的类和资源
-        loader.addJar(new File(path).toURI().toURL());
+        loader.addJar(new File(mainPath).toURI().toURL());
+
         return loader;
     }
     
     private static FixLoader getFixClassLoader(ClassLoader parent) throws MalformedURLException {
         URL[] urls = new URL[] {};
         FixLoader loader = new FixLoader(urls, parent);
-        String path = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        int pathLastIndex = path.lastIndexOf(File.separator) + 1;
-        path = path.substring(0, pathLastIndex);
-        path = path + "dexdiffer.jar";
+        String mainPath = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        int pathLastIndex = mainPath.lastIndexOf(File.separator) + 1;
+        mainPath = mainPath.substring(0, pathLastIndex);
+        mainPath = mainPath + "dexdiffer.jar";
         // 让 FixLoader（Classloader） 能够搜索到 dexdiffer.jar 中的类和资源
-        loader.addJar(new File(path).toURI().toURL());
+        loader.addJar(new File(mainPath).toURI().toURL());
+
         return loader;
     }
 }
